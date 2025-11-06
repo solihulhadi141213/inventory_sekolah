@@ -28,22 +28,9 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-xl-3 col-lg-4 col-md-8 col-sx-8 col-8">
-                            <small>
-                                <b data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Periode Akademik (Tahun Ajaran)">P.A :</b> 
-                            </small>
-                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalPilihPeriodeAkademik">
-                                <span class="badge badge-info">
-                                    <span id="id_academic_period_terpilih">None</span> <i class="bi bi-arrow-up-right"></i>
-                                </span>
-                            </a>
-                            <input type="hidden" id="id_academic_period">
-                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-8 col-sx-8 col-8"></div>
                         <div class="col-xl-9 col-lg-8 col-md-4 col-sx-4 col-4 text-end">
-                            <button type="button" class="btn btn-md btn-outline-primary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalCopy" title="Copy dari periode lain">
-                                <i class="bi bi-copy"></i>
-                            </button>
-                            <button type="button" class="btn btn-md btn-primary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalTambah" title="Tambah Data">
+                            <button type="button" class="btn btn-md btn-primary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalTambah" title="Tambah Data Kelas">
                                 <i class="bi bi-plus"></i>
                             </button>
                         </div>
@@ -54,30 +41,17 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th valign="middle"><b>No</b></th>
-                                    <th valign="middle"><b>Jenjang</b></th>
-                                    <th valign="middle"><b>Kelas</b></th>
-                                    <th valign="middle">
-                                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Jumlah Siswa Berdasarkan Data Tagihan / Jumlah Siswa Aktual">
-                                            <b><i class="bi bi-info-circle"></i> Siswa</b>
-                                        </a>
-                                    </th>
-                                    <th valign="middle">
-                                        <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Komponen Biaya Pendidikan">
-                                            <b><i class="bi bi-info-circle"></i> K.B.P</b>
-                                        </a>
-                                    </th>
-                                    <th valign="middle"><b>Nominal<br>Tagihan</b></th>
-                                    <th valign="middle"><b>Diskon</b></th>
-                                    <th valign="middle"><b>Jumlah <br>Tagihan</b></th>
-                                    <th valign="middle"><b>Pembayaran</b></th>
-                                    <th valign="middle"><b>Sisa/Tunggakan</b></th>
-                                    <th valign="middle"><b>Opsi</b></th>
+                                    <td valign="middle"><b>No</b></td>
+                                    <td valign="middle"><b>Jenjang</b></td>
+                                    <td valign="middle"><b>Kelas/Rombel</b></td>
+                                    <td valign="middle"><b>Siswa</b></td>
+                                    <td valign="middle"><b>Permintaan</b></td>
+                                    <td valign="middle" align="right"><b>Opsi</b></td>
                                 </tr>
                             </thead>
                             <tbody id="TabelKelas">
                                 <tr>
-                                    <td class="text-center" colspan="9">
+                                    <td class="text-center" colspan="6">
                                         <small>Tidak ada data kelas yang ditampilkan</small>
                                     </td>
                                 </tr>
