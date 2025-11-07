@@ -124,14 +124,31 @@ Sebelum menjalankan aplikasi, pastikan komputer Anda memiliki **WAMP** atau **XA
    - WAMP → `C:\wamp64\www\InvSchool`
    - XAMPP → `C:\xampp\htdocs\InvSchool`
 2. Pastikan struktur folder seperti `db/`, `_Page/`, `_Config/`, dan `assets/` tidak berubah.
+3. Database aplikasi ada pada diirectory `db/`
 
 ---
 
 ### 3️⃣ Import Database MySQL
 1. Buka **phpMyAdmin** dari browser:  
-   [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
+   `http://localhost/phpmyadmin`
 2. Buat database baru:
-
+   - Klik menu Databases di bagian atas.
+   - Pada kolom Create database, isi dengan nama: `inventory_school`
+   - Klik tombol Create.
+3. Import File SQL
+   - Setelah database berhasil dibuat, klik nama database tersebut di sidebar kiri.
+   - Pilih tab Import di bagian atas halaman.
+   - Klik tombol Choose File (atau Pilih File) dan arahkan ke file berikut di dalam folder aplikasi: `db/inventory_school.sql`
+   - Setelah file dipilih, klik tombol Go di bagian bawah halaman.
+   - Tunggu beberapa detik hingga proses impor selesai.
+4. Edit file koneksi di: `_Config/Connection.php`
+5. Sesuaikan dengan kredensial lokal Anda:
+```php
+$db_host = "localhost";
+$db_user = "root";
+$db_pass = "";
+$db_name = "inventory_school";
+```
 ---
 
 ### 📘 Lisensi
