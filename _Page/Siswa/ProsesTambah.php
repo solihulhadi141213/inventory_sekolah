@@ -15,7 +15,7 @@
     }
 
     //Validasi Form Required
-    $required = ['student_nis','student_name','student_gender','student_registered','student_status'];
+    $required = ['student_nis','student_name','student_gender','id_kelas','student_email','password_siswa'];
     foreach($required as $r){
         if(empty($_POST[$r])){
             echo '<div class="alert alert-danger"><small>Field '.htmlspecialchars($r).' wajib diisi!</small></div>';
@@ -27,22 +27,21 @@
     $student_nis        = validateAndSanitizeInput($_POST['student_nis']);
     $student_name       = validateAndSanitizeInput($_POST['student_name']);
     $student_gender     = validateAndSanitizeInput($_POST['student_gender']);
-    $student_registered = validateAndSanitizeInput($_POST['student_registered']);
-    $student_status     = validateAndSanitizeInput($_POST['student_status']);
+    $id_kelas           = validateAndSanitizeInput($_POST['id_kelas']);
+    $student_email      = validateAndSanitizeInput($_POST['student_email']);
+    $password_siswa      = validateAndSanitizeInput($_POST['password_siswa']);
 
-    //Buat Variabel Yang Tidak Wajib
-    $student_nisn           = $_POST['student_nisn'] ?? '';
-    $id_organization_class  = !empty($_POST['id_organization_class']) ? (int)$_POST['id_organization_class'] : NULL;
-    $place_of_birth         = $_POST['place_of_birth'] ?? '';
-    $date_of_birth          = $_POST['date_of_birth'] ?? '';
-    $student_contact        = $_POST['student_contact'] ?? '';
-    $student_email          = $_POST['student_email'] ?? '';
-    $student_address        = $_POST['student_address'] ?? '';
-    $nama_ortu              = $_POST['nama_ortu'] ?? '';
-    $kontak_ortu            = $_POST['kontak_ortu'] ?? '';
+    //Validasi Password
+    if(strlen($password_siswa) < 6 || strlen($password_siswa) > 20 || !preg_match("/^[a-zA-Z0-9]*$/", $password_siswa)){
+        echo '<div class="alert alert-danger"><small>Password harus 6-20 karakter huruf/angka!</small></div>';
+        exit;
+    }
+
+    // Hash password
+    $password = password_hash($password_siswa, PASSWORD_DEFAULT);
 
     //Validasi NIS harus unik
-    $stmt = $Conn->prepare("SELECT COUNT(*) FROM student WHERE student_nis=?");
+    $stmt = $Conn->prepare("SELECT COUNT(*) FROM siswa WHERE nis=?");
     $stmt->bind_param("s", $student_nis);
     $stmt->execute();
     $stmt->bind_result($count);
@@ -64,7 +63,7 @@
         $tmp_gambar     =$_FILES['student_foto']['tmp_name'];
 
         $ext            = pathinfo($nama_gambar, PATHINFO_EXTENSION);
-        $nama_baru      =generateRandomString(36);
+        $nama_baru      = generateRandomString(36);
         $student_foto   =''.$nama_baru.'.'.$ext.'';
         $path           ="../../assets/img/Siswa/".$student_foto;
 
@@ -88,58 +87,31 @@
         exit;
     }
     
-    //Json Orang Tua
-    $parent_payload=[
-        "nama" => $nama_ortu,
-        "kontak" => $kontak_ortu
-    ];
-
-    $student_parent=json_encode($parent_payload);
     
     // Menggunakan Prepared Statement
-    $stmt = $Conn->prepare("INSERT INTO student (
-    id_organization_class, 
-    student_nis, 
-    student_nisn, 
-    student_name, 
-    student_gender, 
-    place_of_birth, 
-    date_of_birth, 
-    student_contact, 
-    student_email, 
-    student_address, 
-    student_foto, 
-    student_parent, 
-    student_registered, 
-    student_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("isssssssssssss", 
-        $id_organization_class, 
+    $stmt = $Conn->prepare("INSERT INTO siswa (
+    id_kelas, 
+    nis, 
+    nama, 
+    gender,  
+    email, 
+    password, 
+    foto_siswa
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("issssss", 
+        $id_kelas, 
         $student_nis, 
-        $student_nisn, 
         $student_name, 
         $student_gender, 
-        $place_of_birth, 
-        $date_of_birth, 
-        $student_contact, 
         $student_email, 
-        $student_address, 
-        $student_foto, 
-        $student_parent, 
-        $student_registered, 
-        $student_status
+        $password, 
+        $student_foto
     );
     $Input = $stmt->execute();
     $stmt->close();
 
     if($Input){
-        $kategori_log="Siswa";
-        $deskripsi_log="Input Siswa Berhasil";
-        $InputLog=addLog($Conn, $SessionIdAccess, $now, $kategori_log, $deskripsi_log);
-        if($InputLog=="Success"){
-            echo '<code class="text-success" id="NotifikasiTambahBerhasil">Success</code>';
-        }else{
-            echo '<div class="alert alert-danger"><small>Terjadi kesalahan pada saat menyimpan Log</small></div>';
-        }
+       echo '<code class="text-success" id="NotifikasiTambahBerhasil">Success</code>';
     }else{
         echo '<div class="alert alert-danger"><small>Terjadi kesalahan pada saat menyimpan data</small></div>';
     }

@@ -6,37 +6,37 @@
         echo '<input type="text" name="keyword" id="keyword" class="form-control">';
     }else{
         $keyword_by=$_POST['KeywordBy'];
-        if($keyword_by=="id_organization_class"){
+        if($keyword_by=="id_kelas"){
             echo '<select name="keyword" id="keyword" class="form-control">';
             echo '  <option value="">Pilih</option>';
             //Tampilkan Level
-            $query_level = mysqli_query($Conn, "SELECT DISTINCT class_level FROM organization_class  ORDER BY class_level ASC");
+            $query_level = mysqli_query($Conn, "SELECT DISTINCT jenjang FROM kelas ORDER BY jenjang ASC");
             while ($data_level = mysqli_fetch_array($query_level)) {
-                $class_level = $data_level['class_level'];
+                $class_level = $data_level['jenjang'];
                 echo '<optgroup label="'.$class_level.'">';
 
                 //Tampilkan Kelas
-                $query_kelas = mysqli_query($Conn, "SELECT id_organization_class, class_name FROM organization_class WHERE class_level='$class_level' ORDER BY class_name ASC");
+                $query_kelas = mysqli_query($Conn, "SELECT id_kelas, kelas FROM kelas WHERE jenjang='$class_level' ORDER BY kelas ASC");
                 while ($data_kelas = mysqli_fetch_array($query_kelas)) {
-                    $id_organization_class = $data_kelas['id_organization_class'];
-                    $class_name = $data_kelas['class_name'];
+                    $id_organization_class = $data_kelas['id_kelas'];
+                    $class_name = $data_kelas['kelas'];
                     echo '<option value="'.$id_organization_class.'">'.$class_level.'-'.$class_name.'</option>';
                 }
                 echo '</optgroup>';
             }
             echo '</select>';
         }else{
-            if($keyword_by=="student_gender"){
+            if($keyword_by=="gender"){
                 echo '
                     <select name="keyword" id="keyword" class="form-control" required>
                         <option value="">Pilih</option>
-                        <option value="Male">Laki-laki</option>
-                        <option value="Female">Perempuan</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
                     </select>
                 ';
             }else{
-                if($keyword_by=="student_registered"){
-                    echo '<input type="date" name="keyword" id="keyword" class="form-control">';
+                if($keyword_by=="email"){
+                    echo '<input type="email" name="keyword" id="keyword" class="form-control">';
                 }else{
                     echo '<input type="text" name="keyword" id="keyword" class="form-control">';
                 }

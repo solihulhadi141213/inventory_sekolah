@@ -10,18 +10,12 @@
     if(empty($SessionIdAccess)){
         echo '
             <tr>
-                <td colspan="10" class="text-center">
+                <td colspan="7" class="text-center">
                     <small class="text-danger">Sesi Akses Sudah Berakhir! Silahkan Login Ulang!</small>
                 </td>
             </tr>
         ';
     }else{
-        //kelompok_status_siswa
-        if(!empty($_POST['kelompok_status_siswa'])){
-            $status_siswa=$_POST['kelompok_status_siswa'];
-        }else{
-            $status_siswa="";
-        }
         //Keyword_by
         if(!empty($_POST['keyword_by'])){
             $keyword_by=$_POST['keyword_by'];
@@ -50,7 +44,7 @@
         if(!empty($_POST['OrderBy'])){
             $OrderBy=$_POST['OrderBy'];
         }else{
-            $OrderBy="id_student ";
+            $OrderBy="id_siswa ";
         }
         //Atur Page
         if(!empty($_POST['page'])){
@@ -60,33 +54,17 @@
             $page="1";
             $posisi = 0;
         }
-        if(empty($_POST['kelompok_status_siswa'])){
-            if(empty($keyword_by)){
-                if(empty($keyword)){
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student "));
-                }else{
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student WHERE student_name like '%$keyword%' OR student_nis like '%$keyword%' OR id_organization_class like '%$keyword%' OR student_gender like '%$keyword%' OR student_registered like '%$keyword%'"));
-                }
+        if(empty($keyword_by)){
+            if(empty($keyword)){
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_siswa FROM siswa"));
             }else{
-                if(empty($keyword)){
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student "));
-                }else{
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student  WHERE $keyword_by like '%$keyword%'"));
-                }
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_siswa FROM siswa WHERE nis like '%$keyword%' OR nama like '%$keyword%' OR gender like '%$keyword%' OR email like '%$keyword%'"));
             }
         }else{
-            if(empty($keyword_by)){
-                if(empty($keyword)){
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student WHERE student_status='$status_siswa'"));
-                }else{
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student WHERE (student_status='$status_siswa') AND (student_name like '%$keyword%' OR student_nis like '%$keyword%' OR id_organization_class like '%$keyword%' OR student_gender like '%$keyword%' OR student_registered like '%$keyword%')"));
-                }
+            if(empty($keyword)){
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_siswa FROM siswa"));
             }else{
-                if(empty($keyword)){
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student WHERE student_status='$status_siswa'"));
-                }else{
-                    $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_student  FROM student  WHERE (student_status='$status_siswa') AND ($keyword_by like '%$keyword%')"));
-                }
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_siswa FROM siswa WHERE $keyword_by like '%$keyword%'"));
             }
         }
         
@@ -95,115 +73,69 @@
         if(empty($jml_data)){
             echo '
                 <tr>
-                    <td colspan="10" class="text-center">
-                        <small class="text-danger">Tidak Ada Data Fitur Aplikasi Yang Ditampilkan!</small>
+                    <td colspan="7" class="text-center">
+                        <small class="text-danger">Tidak Ada Data Siswa Yang Ditampilkan!</small>
                     </td>
                 </tr>
             ';
         }else{
             $no = 1+$posisi;
             //KONDISI PENGATURAN MASING FILTER
-            if(empty($_POST['kelompok_status_siswa'])){
-                if(empty($keyword_by)){
-                    if(empty($keyword)){
-                        $query = mysqli_query($Conn, "SELECT*FROM student  ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM student  WHERE student_name like '%$keyword%' OR student_nis like '%$keyword%' OR id_organization_class like '%$keyword%' OR student_gender like '%$keyword%' OR student_registered like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }
+             if(empty($keyword_by)){
+                if(empty($keyword)){
+                    $query = mysqli_query($Conn, "SELECT*FROM siswa ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
-                    if(empty($keyword)){
-                        $query = mysqli_query($Conn, "SELECT*FROM student  ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM student  WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }
+                    $query = mysqli_query($Conn, "SELECT*FROM siswa WHERE nis like '%$keyword%' OR nama like '%$keyword%' OR gender like '%$keyword%' OR email like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }
             }else{
-                if(empty($keyword_by)){
-                    if(empty($keyword)){
-                        $query = mysqli_query($Conn, "SELECT*FROM student WHERE student_status='$status_siswa' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM student  WHERE (student_status='$status_siswa') AND (student_name like '%$keyword%' OR student_nis like '%$keyword%' OR id_organization_class like '%$keyword%' OR student_gender like '%$keyword%' OR student_registered like '%$keyword%') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }
+                if(empty($keyword)){
+                    $query = mysqli_query($Conn, "SELECT*FROM siswa ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }else{
-                    if(empty($keyword)){
-                        $query = mysqli_query($Conn, "SELECT*FROM student WHERE student_status='$status_siswa' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }else{
-                        $query = mysqli_query($Conn, "SELECT*FROM student WHERE (student_status='$status_siswa') AND ($keyword_by like '%$keyword%') ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                    }
+                    $query = mysqli_query($Conn, "SELECT*FROM siswa WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
                 }
             }
             while ($data = mysqli_fetch_array($query)) {
-                $id_student = $data['id_student'];
-                $id_organization_class= $data['id_organization_class'];
-                $student_name= $data['student_name'];
-                $student_gender= $data['student_gender'];
-                $student_registered= $data['student_registered'];
-                $student_status= $data['student_status'];
-
-                //NIS
-                if(empty($data['student_nis'])){
-                    $student_nis='-';
-                }else{
-                    $student_nis=$data['student_nis'];
-                }
+                $id_siswa = $data['id_siswa'];
+                $id_kelas= $data['id_kelas'];
+                $nis= $data['nis'];
+                $nama= $data['nama'];
+                $gender= $data['gender'];
+                $email= $data['email'];
 
                 //Routing Gender
-                if($student_gender=="Male"){
-                    $gender_label='<span class="badge badge-success"><i class="bi bi-gender-male"></i> Male</span>';
+                if($gender=="Laki-Laki"){
+                    $gender_label='<span class="badge badge-success"><i class="bi bi-gender-male"></i> Laki-laki</span>';
                 }else{
-                    if($student_gender=="Female"){
-                        $gender_label='<span class="badge badge-danger"><i class="bi bi-gender-female"></i> Female</span>';
+                    if($gender=="Perempuan"){
+                        $gender_label='<span class="badge badge-danger"><i class="bi bi-gender-female"></i> Perempuan</span>';
                     }else{
                         $gender_label='<span class="badge badge-dark"><i class="bi bi-x-circle"></i> NONE</span>';
                     }
                 }
 
                 //Buka Kelas
-                if(empty($data['id_organization_class'])){
+                if(empty($data['id_kelas'])){
                     $label_kelas='-';
-                    $id_academic_period='';
-                    $academic_period='-';
                 }else{
-                    $level=GetDetailData($Conn, 'organization_class', 'id_organization_class', $id_organization_class, 'class_level');
-                    $kelas=GetDetailData($Conn, 'organization_class', 'id_organization_class', $id_organization_class, 'class_name');
-                    $id_academic_period=GetDetailData($Conn, 'organization_class', 'id_organization_class', $id_organization_class, 'id_academic_period');
-                    $label_kelas="$level-$kelas";
-
-                    //Periode Akademik
-                    $academic_period=GetDetailData($Conn, 'academic_period', 'id_academic_period', $id_academic_period, 'academic_period');
+                    $jenjang=GetDetailData($Conn, 'kelas', 'id_kelas', $id_kelas, 'jenjang');
+                    $kelas=GetDetailData($Conn, 'kelas', 'id_kelas', $id_kelas, 'kelas');
+                    
+                    $label_kelas="$jenjang-$kelas";
                 }
                 
-
-                //Format Tanggal Daftar
-                $tanggal_daftar=date('d/m/Y', strtotime($student_registered));
-
-                //Status
-                if($student_status=="Terdaftar"){
-                    $label_status='<span class="badge badge-success">Terdaftar</span>';
-                }else{
-                    if($student_status=="Lulus"){
-                        $label_status='<span class="badge badge-warning">Lulus</span>';
-                    }else{
-                        $label_status='<span class="badge badge-danger">Keluar</span>';
-                    }
-                }
                 echo '
                     <tr>
-                        <td>
-                            <input type="checkbox" name="id_student[]" class="form-check-input" value="'.$id_student .'">
-                        </td>
                         <td><small>'.$no.'</small></td>
                         <td>
-                            <a href="javascript:void(0);" class="text text-decoration-underline" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_student .'">
-                                <small>'.$student_name.'</small>
+                            <a href="javascriipt:voiid(0);" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_siswa .'">
+                                <small class="underscore_doted" data-bs-toggle="tooltip" data-bs-placement="top" title="Click di sini untuk melihat detail siswa">'.$nama.'</small>
                             </a>
                         </td>
-                        <td><small>'.$student_nis.'</small></td>
-                        <td><small>'.$label_kelas.'</small></td>
-                        <td><small>'.$academic_period.'</small></td>
+                        <td><small>'.$nis.'</small></td>
                         <td><small>'.$gender_label.'</small></td>
-                        <td><small>'.$tanggal_daftar.'</small></td>
-                        <td><small>'.$label_status.'</small></td>
+                        <td><small>'.$email.'</small></td>
+                        <td><small>'.$jenjang.'</small></td>
+                        <td><small>'.$kelas.'</small></td>
                         <td>
                             <button type="button" class="btn btn-sm btn-outline-dark btn-floating"  data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i>
@@ -213,17 +145,17 @@
                                     <h6>Option</h6>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_student .'">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_siswa .'">
                                         <i class="bi bi-info-circle"></i> Detail
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_student .'">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_siswa .'">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapus" data-id="'.$id_student .'">
+                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapus" data-id="'.$id_siswa .'">
                                         <i class="bi bi-x"></i> Hapus
                                     </a>
                                 </li>

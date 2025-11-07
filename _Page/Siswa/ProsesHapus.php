@@ -37,10 +37,10 @@
     $id_student=validateAndSanitizeInput($_POST['id_student']);
 
     //Buka data foto
-    $student_foto=GetDetailData($Conn,'student','id_student',$id_student,'student_foto');
+    $student_foto=GetDetailData($Conn,'siswa','id_siswa',$id_student,'foto_siswa');
     
     //Proses hapus data
-    $HapusSiswa = mysqli_query($Conn, "DELETE FROM student WHERE id_student='$id_student'") or die(mysqli_error($Conn));
+    $HapusSiswa = mysqli_query($Conn, "DELETE FROM siswa WHERE id_siswa='$id_student'") or die(mysqli_error($Conn));
     if ($HapusSiswa) {
 
         //Jika Ada File Foto

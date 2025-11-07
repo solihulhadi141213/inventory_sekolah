@@ -35,7 +35,7 @@
     $id_student=validateAndSanitizeInput($_POST['id_student']);
 
     //Buka Data sISWA
-    $Qry = $Conn->prepare("SELECT * FROM student WHERE id_student = ?");
+    $Qry = $Conn->prepare("SELECT * FROM siswa WHERE id_siswa = ?");
     $Qry->bind_param("i", $id_student);
     if (!$Qry->execute()) {
         $error=$Conn->error;
@@ -50,129 +50,45 @@
         $Qry->close();
 
         //Buat Variabel
-        $id_organization_class  =$Data['id_organization_class'];
-        $student_nis            =$Data['student_nis'] ?? '-';
-        $student_nisn           =$Data['student_nisn'] ?? '-';
-        $student_name           =$Data['student_name'];
-        $student_gender         =$Data['student_gender'];
-        $student_parent         =$Data['student_parent'];
-        $student_registered     =$Data['student_registered'];
-        $student_status         =$Data['student_status'];
-
-        //Parent
-        $parent_arry=json_decode($student_parent, true);
-        if(empty($parent_arry['nama'])){
-            $parent_nama="-";
-        }else{
-            $parent_nama=$parent_arry['nama'];
-        }
-        if(empty($parent_arry['kontak'])){
-            $parent_kontak="-";
-        }else{
-            $parent_kontak=$parent_arry['kontak'];
-        }
-
-        //Tempat lahir
-        if(empty($place_of_birth)){
-            $place_of_birth ="-";
-        }else{
-            $place_of_birth =$Data['place_of_birth'];
-        }
-
-        //Tanggal Lahir
-        if($Data['date_of_birth']=="0000-00-00"){
-            $date_of_birth="-";
-        }else{
-            $date_of_birth =date('d F Y', strtotime($Data['date_of_birth']));
-        }
-
-        //Kontak
-        if(empty($Data['student_contact'])){
-            $student_contact ="-";
-        }else{
-            $student_contact =$Data['student_contact'];
-        }
-
-        //Kontak
-        if(empty($Data['student_email'])){
-            $student_email ="-";
-        }else{
-            $student_email =$Data['student_email'];
-        }
-
-        //student_address
-        if(empty($Data['student_address'])){
-            $student_address ="-";
-        }else{
-            $student_address =$Data['student_address'];
-        }
-
-        //student_foto
-        if(empty($Data['student_foto'])){
-            $student_foto ="No-Image.png";
-        }else{
-            $student_foto =$Data['student_foto'];
-        }
-
-        //Format Tanggal Daftar
-        $tanggal_daftar=date('d/m/Y', strtotime($student_registered));
-
-        //Status
-        if($student_status=="Terdaftar"){
-            $label_status='<span class="badge badge-success">Terdaftar</span>';
-        }else{
-            if($student_status=="Lulus"){
-                $label_status='<span class="badge badge-warning">Lulus</span>';
-            }else{
-                $label_status='<span class="badge badge-danger">Keluar</span>';
-            }
-        }
+        $id_kelas   = $Data['id_kelas'];
+        $nis        = $Data['nis'];
+        $nama       = $Data['nama'];
+        $gender     = $Data['gender'];
+        $email      = $Data['email'];
+        $foto_siswa = $Data['foto_siswa'];
 
         //Tampilkan Data
         echo '
             <input type="hidden" name="id_student" value="'.$id_student.'">
         ';
+        
         echo '
             <div class="row mb-2">
                 <div class="col-4"><small>Nama</small></div>
                 <div class="col-1"><small>:</small></div>
                 <div class="col-7">
-                    <small class="text text-grayish">'.$student_name.'</small>
+                    <small class="text text-grayish">'.$nama.'</small>
                 </div>
             </div>
             <div class="row mb-2">
                 <div class="col-4"><small>NIS</small></div>
                 <div class="col-1"><small>:</small></div>
                 <div class="col-7">
-                    <small class="text text-grayish">'.$student_nis.'</small>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-4"><small>NISN</small></div>
-                <div class="col-1"><small>:</small></div>
-                <div class="col-7">
-                    <small class="text text-grayish">'.$student_nisn.'</small>
+                    <small class="text text-grayish">'.$nis.'</small>
                 </div>
             </div>
             <div class="row mb-2">
                 <div class="col-4"><small>Gender</small></div>
                 <div class="col-1"><small>:</small></div>
                 <div class="col-7">
-                    <small class="text text-grayish">'.$student_gender.'</small>
+                    <small class="text text-grayish">'.$gender.'</small>
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-4"><small>Tgl.Daftar</small></div>
+                <div class="col-4"><small>Email</small></div>
                 <div class="col-1"><small>:</small></div>
                 <div class="col-7">
-                    <small class="text text-grayish">'.$tanggal_daftar.'</small>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-4"><small>Status</small></div>
-                <div class="col-1"><small>:</small></div>
-                <div class="col-7">
-                    '.$label_status.'
+                    <small class="text text-grayish">'.$email.'</small>
                 </div>
             </div>
             <div class="row mb-3">
@@ -180,7 +96,7 @@
                     <div class="alert alert-danger">
                         <h2>Penting!</h2>
                         <small>
-                            Menghapus data siswa akan menghapus data turunannya, termasuk riwayat pembayaran.<br>
+                            Menghapus data siswa akan menghapus data turunannya, termasuk riwayat permintaan perbaiikan fasilitas sekolah dan akun akses.<br>
                             <b>Apakah anda yakin akan menghapus data tersebut?</b>
                         </small>
                     </div>

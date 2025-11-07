@@ -17,7 +17,7 @@
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <small>
                     Berikut ini adalah halaman pengelolaan siswa. 
-                    Anda bisa mengelola data identitas siswa pada halaman ini. Buka detail siswa untuk mengelola atribut lengkap dan riwayat pembayaran.
+                    Anda bisa mengelola data identitas siswa pada halaman ini.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </small>
             </div>
@@ -30,9 +30,6 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-12 text-end">
-                                <button type="button" class="btn btn-md btn-light btn-floating" data-bs-toggle="modal" data-bs-target="#ModalImport" title="Import Data Siswa">
-                                    <i class="bi bi-upload"></i>
-                                </button>
                                 <button type="button" class="btn btn-md btn-secondary btn-floating" data-bs-toggle="modal" data-bs-target="#ModalFilter" title="Filter Data Siswa">
                                     <i class="bi bi-filter"></i>
                                 </button>
@@ -47,43 +44,24 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <input type="checkbox" name="check_all" class="form-check-input" value="check_all">
-                                        </th>
                                         <th><b>No</b></th>
                                         <th><b>Nama</b></th>
                                         <th><b>NIS</b></th>
-                                        <th><b>Kelas</b></th>
-                                        <th><b>Thn.Akademik</b></th>
                                         <th><b>Gender</b></th>
-                                        <th><b>Tgl.Daftar</b></th>
-                                        <th><b>Status</b></th>
+                                        <th><b>Email</b></th>
+                                        <th><b>Level / Jenjang</b></th>
+                                        <th><b>Kelas / Rombel</b></th>
                                         <th><b>Opsi</b></th>
                                     </tr>
                                 </thead>
                                 <tbody id="TabelSiswa">
                                     <tr>
-                                        <td class="text-center" colspan="10">
+                                        <td class="text-center" colspan="7">
                                             <small>Tidak ada data siswa yang ditampilkan</small>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"  data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical"></i> Option
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalUpdateStatus">
-                                        <i class="bi bi-tags"></i> Update Status Siswa
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalUpdateKelas">
-                                        <i class="bi bi-building"></i> Update Kelas
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="card-footer">

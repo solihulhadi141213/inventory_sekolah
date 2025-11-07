@@ -15,7 +15,7 @@
     }
 
     // Validasi Form Required
-    $required = ['id_student','student_nis','student_name','student_gender','student_registered','student_status'];
+    $required = ['id_student','student_email','student_nis','student_name','student_gender','id_kelas','student_email'];
     foreach($required as $r){
         if(!isset($_POST[$r]) || $_POST[$r]===''){
             echo '<div class="alert alert-danger"><small>Field '.htmlspecialchars($r).' wajib diisi!</small></div>';
@@ -28,26 +28,19 @@
     $student_nis        = validateAndSanitizeInput($_POST['student_nis']);
     $student_name       = validateAndSanitizeInput($_POST['student_name']);
     $student_gender     = validateAndSanitizeInput($_POST['student_gender']);
-    $student_registered = validateAndSanitizeInput($_POST['student_registered']);
-    $student_status     = validateAndSanitizeInput($_POST['student_status']);
+    $id_kelas           = validateAndSanitizeInput($_POST['id_kelas']);
+    $student_email      = validateAndSanitizeInput($_POST['student_email']);
 
     // Variabel tidak wajib
-    $student_nisn          = $_POST['student_nisn'] ?? '';
-    $place_of_birth        = $_POST['place_of_birth'] ?? '';
-    $date_of_birth_raw     = $_POST['date_of_birth'] ?? '';
-    $student_contact       = $_POST['student_contact'] ?? '';
-    $student_email         = $_POST['student_email'] ?? '';
-    $student_address       = $_POST['student_address'] ?? '';
-    $nama_ortu             = $_POST['nama_ortu'] ?? '';
-    $kontak_ortu           = $_POST['kontak_ortu'] ?? '';
-
-    // Normalisasi tanggal opsional (biar tidak '' ke kolom DATE)
-    $date_of_birth = ($date_of_birth_raw !== '')
-        ? validateAndSanitizeInput($date_of_birth_raw)
-        : NULL;
+    if(empty($_POST['password_siswa'])){
+        $password       = GetDetailData($Conn, 'siswa', 'id_siswa', $id_student, 'password');
+    }else{
+        $password_siswa = validateAndSanitizeInput($_POST['password_siswa']);
+        $password       = password_hash($password_siswa, PASSWORD_DEFAULT);
+    }
 
     // Ambil NIS lama untuk cek unik bila berubah
-    $student_nis_lama = GetDetailData($Conn, 'student', 'id_student', $id_student, 'student_nis');
+    $student_nis_lama = GetDetailData($Conn, 'siswa', 'id_siswa', $id_student, 'nis');
     if ($student_nis_lama === null) {
         echo '<div class="alert alert-danger"><small>Data siswa tidak ditemukan.</small></div>';
         exit;
@@ -55,7 +48,7 @@
 
     // Jika NIS berubah, cek unik (exclude id_student yang sedang di-edit)
     if ($student_nis_lama !== $student_nis) {
-        $stmt = $Conn->prepare("SELECT COUNT(*) FROM student WHERE student_nis = ? AND id_student <> ?");
+        $stmt = $Conn->prepare("SELECT COUNT(*) FROM siswa WHERE nis = ? AND id_siswa <> ?");
         $stmt->bind_param("si", $student_nis, $id_student);
         $stmt->execute();
         $stmt->bind_result($count);
@@ -69,7 +62,7 @@
     }
 
     // Validasi & upload foto (jika ada), hapus foto lama bila sukses upload baru
-    $student_foto = GetDetailData($Conn, 'student', 'id_student', $id_student, 'student_foto'); // default tetap yg lama
+    $student_foto = GetDetailData($Conn, 'siswa', 'id_siswa', $id_student, 'foto_siswa'); // default tetap yg lama
     $input_foto   = "Valid";
 
     if (!empty($_FILES['student_foto']['name'])) {
@@ -97,7 +90,7 @@
                     $input_foto = "Upload file gagal!";
                 } else {
                     // Hapus foto lama jika ada
-                    $foto_lama = GetDetailData($Conn, 'student', 'id_student', $id_student, 'student_foto');
+                    $foto_lama = GetDetailData($Conn, 'siswa', 'id_siswa', $id_student, 'foto_siswa');
                     if (!empty($foto_lama)) {
                         $path_foto_lama = $dir_tujuan.$foto_lama;
                         if (file_exists($path_foto_lama)) {
@@ -124,29 +117,16 @@
         exit;
     }
 
-    // JSON orang tua
-    $parent_payload = [
-        "nama"   => $nama_ortu,
-        "kontak" => $kontak_ortu
-    ];
-    $student_parent = json_encode($parent_payload);
-
-    // === UPDATE student (bukan INSERT) ===
-    $sql = "UPDATE student SET
-                student_nis           = ?,
-                student_nisn          = ?,
-                student_name          = ?,
-                student_gender        = ?,
-                place_of_birth        = ?,
-                date_of_birth         = ?,
-                student_contact       = ?,
-                student_email         = ?,
-                student_address       = ?,
-                student_foto          = ?,
-                student_parent        = ?,
-                student_registered    = ?,
-                student_status        = ?
-            WHERE id_student = ?";
+    // === UPDATE siswa (bukan INSERT) ===
+    $sql = "UPDATE siswa SET
+                id_kelas    = ?,
+                nis         = ?,
+                nama        = ?,
+                gender      = ?,
+                email       = ?,
+                password    = ?,
+                foto_siswa  = ?
+            WHERE id_siswa = ?";
 
     $stmt = $Conn->prepare($sql);
     if (!$stmt) {
@@ -163,20 +143,14 @@
     */
 
     $stmt->bind_param(
-        "sssssssssssssi",
+        "issssssi",
+        $id_kelas,
         $student_nis,
-        $student_nisn,
         $student_name,
         $student_gender,
-        $place_of_birth,
-        $date_of_birth,      // NULL jika kosong
-        $student_contact,
         $student_email,
-        $student_address,
+        $password,
         $student_foto,
-        $student_parent,
-        $student_registered,
-        $student_status,
         $id_student
     );
 
@@ -185,15 +159,7 @@
     $stmt->close();
 
     if ($Input) {
-        $kategori_log  = "Siswa";
-        $deskripsi_log = "Edit Siswa Berhasil";
-        $InputLog = addLog($Conn, $SessionIdAccess, $now, $kategori_log, $deskripsi_log);
-
-        if ($InputLog=="Success") {
-            echo '<code class="text-success" id="NotifikasiEditBerhasil">Success</code>';
-        } else {
-            echo '<div class="alert alert-danger"><small>Terjadi kesalahan pada saat menyimpan Log</small></div>';
-        }
+        echo '<code class="text-success" id="NotifikasiEditBerhasil">Success</code>';
     } else {
         echo '<div class="alert alert-danger"><small>Terjadi kesalahan pada saat menyimpan data: '.htmlspecialchars($err).'</small></div>';
     }
