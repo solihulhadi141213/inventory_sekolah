@@ -10,6 +10,7 @@
             "Kelas"             =>  "_Page/Kelas/Kelas.php",
             "Siswa"             =>  "_Page/Siswa/Siswa.php",
             "Permintaan"        =>  "_Page/Permintaan/Permintaan.php",
+            "PermintaanSiswa"   =>  "_Page/PermintaanSiswa/PermintaanSiswa.php",
             "SettingGeneral"    =>  "_Page/SettingGeneral/SettingGeneral.php",
             "Bantuan"              =>  "_Page/Bantuan/Bantuan.php",
         ];

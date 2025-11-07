@@ -12,6 +12,7 @@
             "Kelas"             => "_Page/Kelas/Kelas.js",
             "Siswa"             => "_Page/Siswa/Siswa.js",
             "Permintaan"        => "_Page/Permintaan/Permintaan.js",
+            "PermintaanSiswa"   => "_Page/PermintaanSiswa/PermintaanSiswa.js",
             "SettingGeneral"    => "_Page/SettingGeneral/SettingGeneral.js",
             "Bantuan"           => "_Page/Bantuan/Bantuan.js"
         ];

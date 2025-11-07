@@ -16,83 +16,18 @@
             </tr>
         ';
     }else{
-        //Keyword_by
-        if(!empty($_POST['keyword_by'])){
-            $keyword_by=$_POST['keyword_by'];
-        }else{
-            $keyword_by="";
-        }
-        //keyword
-        if(!empty($_POST['keyword'])){
-            $keyword=$_POST['keyword'];
-        }else{
-            $keyword="";
-        }
-        //batas
-        if(!empty($_POST['batas'])){
-            $batas=$_POST['batas'];
-        }else{
-            $batas="10";
-        }
-        //ShortBy
-        if(!empty($_POST['ShortBy'])){
-            $ShortBy=$_POST['ShortBy'];
-        }else{
-            $ShortBy="DESC";
-        }
-        //OrderBy
-        if(!empty($_POST['OrderBy'])){
-            $OrderBy=$_POST['OrderBy'];
-        }else{
-            $OrderBy="id_permintaan";
-        }
-        //Atur Page
-        if(!empty($_POST['page'])){
-            $page=$_POST['page'];
-            $posisi = ( $page - 1 ) * $batas;
-        }else{
-            $page="1";
-            $posisi = 0;
-        }
-        if(empty($keyword_by)){
-            if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_permintaan FROM permintaan"));
-            }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_permintaan FROM permintaan WHERE kategori like '%$keyword%' OR keterangan_permintaan like '%$keyword%'"));
-            }
-        }else{
-            if(empty($keyword)){
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_permintaan FROM permintaan"));
-            }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_permintaan FROM permintaan WHERE $keyword_by like '%$keyword%'"));
-            }
-        }
-        //Mengatur Halaman
-        $JmlHalaman = ceil($jml_data/$batas); 
+        $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_permintaan FROM permintaan WHERE id_siswa='$SessionIdAccess'"));
         if(empty($jml_data)){
             echo '
                 <tr>
-                    <td colspan="9" class="text-center">
+                    <td colspan="7" class="text-center">
                         <small class="text-danger">Tidak Ada Data Permintaan Yang Ditampilkan!</small>
                     </td>
                 </tr>
             ';
         }else{
-            $no = 1+$posisi;
-            //KONDISI PENGATURAN MASING FILTER
-            if(empty($keyword_by)){
-                if(empty($keyword)){
-                    $query = mysqli_query($Conn, "SELECT*FROM permintaan ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                }else{
-                    $query = mysqli_query($Conn, "SELECT*FROM permintaan WHERE kategori like '%$keyword%' OR keterangan_permintaan like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                }
-            }else{
-                if(empty($keyword)){
-                    $query = mysqli_query($Conn, "SELECT*FROM permintaan ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                }else{
-                    $query = mysqli_query($Conn, "SELECT*FROM permintaan WHERE $keyword_by like '%$keyword%' ORDER BY $OrderBy $ShortBy LIMIT $posisi, $batas");
-                }
-            }
+            $no = 1;
+            $query = mysqli_query($Conn, "SELECT*FROM permintaan WHERE id_siswa='$SessionIdAccess' ORDER BY id_permintaan DESC");
             while ($data = mysqli_fetch_array($query)) {
                 $id_permintaan          = $data['id_permintaan'];
                 $id_siswa               = $data['id_siswa'];
@@ -153,6 +88,22 @@
                         }
                     }
                 }
+                if($status==""){
+                    $opsi_lanjutan = '
+                        <li>
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_permintaan .'">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapus" data-id="'.$id_permintaan .'">
+                                <i class="bi bi-x"></i> Batalkan
+                            </a>
+                        </li>
+                    ';
+                }else{
+                    $opsi_lanjutan = '';
+                }
                
                 echo '
                     <tr>
@@ -160,48 +111,25 @@
                         <td>
                             <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_permintaan .'">
                                 <small class="underscore_doted" data-bs-toggle="tooltip" data-bs-placement="top" title="Click Di Sini Untuk Melihat Detail Permintaan">
-                                    '.$nama_siswa.'
+                                    '.$kategori.'
                                 </small>
                             </a>
                         </td>
-                        <td><small>'.$jenjang.' / '.$kelas.'</small></td>
-                        <td><small>'.$kategori.'</small></td>
                         <td>'.$label_kebutuhan.'</td>
                         <td><small>'.$label_tgl_permintaan.'</small></td>
                         <td><small>'.$label_tanggal_selesai.'</small></td>
-                        <td>
-                            <a href="javascriipt:void(0);" data-bs-toggle="modal" data-bs-target="#ModalUpdateStatusPermiintaan" data-id="'.$id_permintaan .'">
-                                <div data-bs-toggle="tooltip" data-bs-placement="top" title="Click Di Sini Untuk Update Status Permintaan">'.$label_status.'</div>
-                            </a>
-                        </td>
+                        <td>'.$label_status.'</td>
                         <td>
                             <button type="button" class="btn btn-sm btn-outline-dark btn-floating"  data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="">
-                                <li class="dropdown-header text-start">
-                                    <h6>Option</h6>
-                                </li>
                                 <li>
                                     <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalDetail" data-id="'.$id_permintaan .'">
                                         <i class="bi bi-info-circle"></i> Detail
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalEdit" data-id="'.$id_permintaan .'">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalUpdateStatusPermiintaan" data-id="'.$id_permintaan .'">
-                                        <i class="bi bi-arrow-clockwise"></i> Update Permintaan
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#ModalHapus" data-id="'.$id_permintaan .'">
-                                        <i class="bi bi-x"></i> Hapus
-                                    </a>
-                                </li>
+                                '.$opsi_lanjutan.'
                             </ul>
                         </td>
                     </tr>
@@ -213,21 +141,9 @@
 ?>
 <script>
     //Creat Javascript Variabel
-    var page_count=<?php echo $JmlHalaman; ?>;
-    var curent_page=<?php echo $page; ?>;
-    
+    var jml_data=<?php echo $jml_data; ?>;
+  
     //Put Into Pagging Element
-    $('#page_info').html('Page '+curent_page+' Of '+page_count+'');
-    
-    //Set Pagging Button
-    if(curent_page==1){
-        $('#prev_button').prop('disabled', true);
-    }else{
-        $('#prev_button').prop('disabled', false);
-    }
-    if(page_count<=curent_page){
-        $('#next_button').prop('disabled', true);
-    }else{
-        $('#next_button').prop('disabled', false);
-    }
+    $('#page_info').html('Data Count : '+jml_data+' Record');
+
 </script>
