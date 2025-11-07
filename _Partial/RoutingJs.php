@@ -13,7 +13,7 @@
             "Siswa"             => "_Page/Siswa/Siswa.js",
             "Permintaan"        => "_Page/Permintaan/Permintaan.js",
             "SettingGeneral"    => "_Page/SettingGeneral/SettingGeneral.js",
-            "Help"              => "_Page/Help/Help.js"
+            "Bantuan"           => "_Page/Bantuan/Bantuan.js"
         ];
 
         // Cek apakah halaman ada dalam daftar dan sertakan file JS yang sesuai

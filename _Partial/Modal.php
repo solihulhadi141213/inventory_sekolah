@@ -11,7 +11,7 @@
             "Siswa"                 => "_Page/Siswa/ModalSiswa.php",
             "Permintaan"            => "_Page/Permintaan/ModalPermintaan.php",
             "SettingEmail"          => "_Page/SettingEmail/ModalSettingEmail.php",
-            "Help"                  => "_Page/Help/ModalHelp.php"
+            "Bantuan"               => "_Page/Bantuan/ModalBantuan.php"
         ];
 
         // Cek apakah halaman memiliki modal terkait dan sertakan file modalnya

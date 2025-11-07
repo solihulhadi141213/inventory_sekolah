@@ -11,7 +11,7 @@
             "Siswa"             =>  "_Page/Siswa/Siswa.php",
             "Permintaan"        =>  "_Page/Permintaan/Permintaan.php",
             "SettingGeneral"    =>  "_Page/SettingGeneral/SettingGeneral.php",
-            "Help"              =>  "_Page/Help/Help.php",
+            "Bantuan"              =>  "_Page/Bantuan/Bantuan.php",
         ];
 
         //Tangkap 'Page'
