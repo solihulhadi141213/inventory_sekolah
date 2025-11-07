@@ -7,49 +7,39 @@
 
     // Siapkan variabel default
     $response = [
-        "user" => 0,
         "siswa" => 0,
-        "periode" => 0,
-        "pembayaran" => 0
+        "kelas" => 0,
+        "permintaan" => 0,
+        "selesai" => 0
     ];
 
-    // Hitung jumlah user
-    $qUser = $Conn->query("SELECT COUNT(*) AS total FROM access");
-    if ($qUser) {
-        $dUser = $qUser->fetch_assoc();
-        $response['user'] = (int)$dUser['total'];
-    }
-
-    // Hitung jumlah siswa aktif
-    $qSiswa = $Conn->query("SELECT COUNT(*) AS total FROM student WHERE student_status='Terdaftar'");
+    // Hitung jumlah siswa
+    $qSiswa = $Conn->query("SELECT COUNT(*) AS total FROM siswa");
     if ($qSiswa) {
         $dSiswa = $qSiswa->fetch_assoc();
         $response['siswa'] = (int)$dSiswa['total'];
     }
 
-    // Hitung jumlah periode akademik aktif
-    $qPeriode = $Conn->query("SELECT COUNT(*) AS total FROM academic_period");
-    if ($qPeriode) {
-        $dPeriode = $qPeriode->fetch_assoc();
-        $response['periode'] = (int)$dPeriode['total'];
+    // Hitung jumlah kelas
+    $QryKelas = $Conn->query("SELECT COUNT(*) AS total FROM kelas");
+    if ($QryKelas) {
+        $DataKelas = $QryKelas->fetch_assoc();
+        $response['kelas'] = (int)$DataKelas['total'];
     }
 
-    // Hitung total nominal pembayaran tahun berjalan
-    $tahun = date("Y");
-    $qPembayaran = $Conn->prepare("
-        SELECT COALESCE(SUM(payment_nominal),0) AS total 
-        FROM payment 
-        WHERE YEAR(payment_datetime)=?
-    ");
-    $qPembayaran->bind_param("i", $tahun);
-    $qPembayaran->execute();
-    $resPembayaran = $qPembayaran->get_result();
-    if ($resPembayaran) {
-        $dPembayaran = $resPembayaran->fetch_assoc();
-        // Format rupiah
-        $response['pembayaran'] = "Rp " . number_format((float)$dPembayaran['total'], 0, ',', '.');
+    // Hitung Permintaan
+    $QryPermintaan = $Conn->query("SELECT COUNT(*) AS total FROM permintaan");
+    if ($QryPermintaan) {
+        $DataPermintaan = $QryPermintaan->fetch_assoc();
+        $response['permintaan'] = (int)$DataPermintaan['total'];
     }
-    $qPembayaran->close();
+
+     // Hitung Permintaan Selesai
+    $QryPermintaanSelesai = $Conn->query("SELECT COUNT(*) AS total FROM permintaan WHERE status='Selesai'");
+    if ($QryPermintaanSelesai) {
+        $DataPermintaanSelesai = $QryPermintaanSelesai->fetch_assoc();
+        $response['selesai'] = (int)$DataPermintaanSelesai['total'];
+    }
 
     // Output JSON
     echo json_encode($response);

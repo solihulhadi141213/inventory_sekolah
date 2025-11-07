@@ -17,19 +17,22 @@
         $data[] = ["x" => $bln, "y" => 0];
     }
 
-    // Query total nominal pembayaran per bulan
-    $sql = "SELECT MONTH(payment_datetime) AS bulan, SUM(payment_nominal) AS total
-            FROM payment
-            WHERE YEAR(payment_datetime) = ?
-            GROUP BY MONTH(payment_datetime)";
+    // Query jumlah permintaan per bulan
+    $sql = "
+        SELECT MONTH(tgl_permintaan) AS bulan, COUNT(id_permintaan) AS jumlah
+        FROM permintaan
+        WHERE YEAR(tgl_permintaan) = ?
+        GROUP BY MONTH(tgl_permintaan)
+    ";
     $stmt = $Conn->prepare($sql);
     $stmt->bind_param("i", $tahun);
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // Isi data ke array
     while($row = $result->fetch_assoc()){
         $index = (int)$row['bulan'] - 1;
-        $data[$index]['y'] = (float)$row['total'];
+        $data[$index]['y'] = (int)$row['jumlah'];
     }
 
     $stmt->close();
@@ -37,5 +40,4 @@
     // Output JSON
     header('Content-Type: application/json');
     echo json_encode($data);
-
 ?>

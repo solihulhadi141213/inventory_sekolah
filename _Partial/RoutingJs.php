@@ -8,19 +8,11 @@
         // Routing Javascript Berdasarkan Halaman
         $scripts = [
             "MyProfile"         => "_Page/MyProfile/MyProfile.js",
-            "AksesFitur"        => "_Page/AksesFitur/AksesFitur.js",
-            "AksesEntitas"      => "_Page/AksesEntitas/AksesEntitas.js",
             "Akses"             => "_Page/Akses/Akses.js",
-            "TahunAjaran"       => "_Page/TahunAjaran/TahunAjaran.js",
             "Kelas"             => "_Page/Kelas/Kelas.js",
             "Siswa"             => "_Page/Siswa/Siswa.js",
-            "KomponenBiaya"     => "_Page/KomponenBiaya/KomponenBiaya.js",
-            "Tagihan"           => "_Page/Tagihan/Tagihan.js",
-            "Pembayaran"        => "_Page/Pembayaran/Pembayaran.js",
+            "Permintaan"        => "_Page/Permintaan/Permintaan.js",
             "SettingGeneral"    => "_Page/SettingGeneral/SettingGeneral.js",
-            "PaymentGateway"    => "_Page/SettingPayment/SettingPayment.js",
-            "SettingEmail"      => "_Page/SettingEmail/SettingEmail.js",
-            "Aktivitas"         => "_Page/Aktivitas/Aktivitas.js",
             "Help"              => "_Page/Help/Help.js"
         ];
 

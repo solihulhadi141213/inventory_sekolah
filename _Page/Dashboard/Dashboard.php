@@ -43,8 +43,8 @@
                             <i class="bi bi-person"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_pengguna">20.000</b><br>
-                            <small>Akses/User</small>
+                            <b id="put_siswa">00.00</b><br>
+                            <small>Siswa</small>
                         </div>
                     </div>
                 </div>
@@ -55,11 +55,11 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-people"></i>
+                            <i class="bi bi-building"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_siswa_aktif">20.000</b><br>
-                            <small>Siswa Aktif</small>
+                            <b id="put_kelas">00.00</b><br>
+                            <small>Kelas/Rombel</small>
                         </div>
                     </div>
                 </div>
@@ -70,11 +70,11 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-calendar"></i>
+                            <i class="bi bi-send"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_periode_akademik">5</b><br>
-                            <small>Periode Akademik</small>
+                            <b id="put_permintaan">00.00</b><br>
+                            <small>Jumlah Permintaan</small>
                         </div>
                     </div>
                 </div>
@@ -85,11 +85,11 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-coin"></i>
+                            <i class="bi bi-check"></i>
                         </div>
                         <div class="ps-3">
-                            <b id="put_pembayaran">Rp 15.000.000</b><br>
-                            <small>Pembayaran Masuk</small>
+                            <b id="put_permintaan_selesai">00.00</b><br>
+                            <small>Permintaan Selesai</small>
                         </div>
                     </div>
                 </div>
@@ -106,68 +106,6 @@
                     <div class="card">
                         <div class="card-body" id="chart">
                            <!-- Menampilkan Grafik Disini -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <b class="card-title">
-                                Biaya Pendidikan /  <small class="text text-muted">Periode Akademik</small>
-                            </b>
-                        </div>
-                        <div class="card-body">
-                            <div class="activity">
-                                <div class="table table-responsive">
-                                    <table class="table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Periode Akademik</th>
-                                                <th class="text-end">Biaya Pendidikan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="ShowRiwayatTagihan">
-                                            <tr>
-                                                <td colspan="2" class="text-center">
-                                                    <small class="text-danger">Belum Ada Data Yang Ditampilkan</small>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <b class="card-title">
-                                Pembayaran /  <small class="text text-muted">Periode Akademik</small>
-                            </b>
-                        </div>
-                        <div class="card-body">
-                            <div class="activity" id="">
-                                <div class="table table-responsive">
-                                    <table class="table table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Periode Akademik</th>
-                                                <th class="text-end">Pembayaran</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="ShowRiwayatPembayaran">
-                                            <tr>
-                                                <td colspan="2" class="text-center">
-                                                    <small class="text-danger">Belum Ada Data Yang Ditampilkan</small>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

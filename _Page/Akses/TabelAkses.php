@@ -58,7 +58,7 @@
             if(empty($keyword)){
                 $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_admin FROM admin"));
             }else{
-                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_admin admin WHERE admin_name like '%$keyword%' OR admin_email like '%$keyword%'"));
+                $jml_data = mysqli_num_rows(mysqli_query($Conn, "SELECT id_admin FROM admin WHERE admin_name like '%$keyword%' OR admin_email like '%$keyword%'"));
             }
         }else{
             if(empty($keyword)){
