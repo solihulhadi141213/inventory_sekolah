@@ -103,6 +103,37 @@ Aplikasi ini dikembangkan dengan prinsip **clean code**, **responsif**, dan **mu
 
 ---
 
+## 🧩 Instalasi
+
+### 1️⃣ Persiapan Lingkungan
+Sebelum menjalankan aplikasi, pastikan komputer Anda memiliki **WAMP** atau **XAMPP**.
+
+#### 🧱 Instalasi WAMP
+1. Unduh WAMP Server: [https://www.wampserver.com/](https://www.wampserver.com/)
+2. Instal dan jalankan hingga ikon WAMP berwarna hijau (Apache & MySQL aktif).
+
+#### ⚙️ Instalasi XAMPP (Alternatif)
+1. Unduh XAMPP: [https://www.apachefriends.org/](https://www.apachefriends.org/)
+2. Jalankan installer dan buka **XAMPP Control Panel**.
+3. Klik **Start** pada modul **Apache** dan **MySQL** sampai status **Running**.
+
+---
+
+### 2️⃣ Menempatkan File Aplikasi
+1. Ekstrak folder **InvSchool v1.0** ke direktori server lokal Anda:
+   - WAMP → `C:\wamp64\www\InvSchool`
+   - XAMPP → `C:\xampp\htdocs\InvSchool`
+2. Pastikan struktur folder seperti `db/`, `_Page/`, `_Config/`, dan `assets/` tidak berubah.
+
+---
+
+### 3️⃣ Import Database MySQL
+1. Buka **phpMyAdmin** dari browser:  
+   [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
+2. Buat database baru:
+
+---
+
 ### 📘 Lisensi
 
 Aplikasi ini dikembangkan untuk keperluan internal sekolah dan tidak untuk tujuan komersial tanpa izin pengembang.
